@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>ToDo List</title>
+</head>
+<body>
+    <div class="container">
+        <h1>ToDo List</h1>
+        <div class="task-input">
+            <form action="/add_task" method="post">
+                <input type="text" name="task" id="task" placeholder="Add a new task">
+                <select name="category" id="category">
+                    <option value="todo">To Do</option>
+                    <option value="doing">Doing</option>
+                    <option value="done">Done</option>
+                </select>
+                <button type="submit">Add</button>
+            </form>
+        </div>
+        <div class="tasks">
+            {% for category, category_tasks in tasks.items() %}
+                <div class="task-column" id="{{ category }}-column">
+                    <h2>{{ category.capitalize() }}</h2>
+                    <ul id="{{ category }}-list">
+                        {% for task in category_tasks %}
+                            <li id="task-{{ task.id }}" data-id="{{ task.id }}">
+                                {{ task.text }}
+                                <form action="{{ url_for('delete_task', task_id=task.id) }}" method="post" class="action-form">
+                                    <button type="submit" class="delete-button">Delete</button>
+                                </form>
+        
+              
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
